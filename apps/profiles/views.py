@@ -1,4 +1,3 @@
-from urllib import request
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,12 +5,14 @@ from .models import Profile
 from .exceptions import NotYourProfile, ProfileNotFound
 from .renderers import ProfileJSONRenderer
 from .serializers import ProfileSerializer, UpdateProfileSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class AgentListAPIView(generics.ListAPIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Profile.objects.filter(is_agent=True)
     serializer_class = ProfileSerializer
+    authentication_classes = (JWTAuthentication,)
 
 
 class TopAgentListAPIView(generics.ListAPIView):
@@ -27,7 +28,7 @@ class GetProfileAPIView(APIView):
     def get(self, req):
         user = self.request.user
         user_profile = Profile.objects.get(user=user)
-        serializer = ProfileSerializer(user_profile, context={"request": request})
+        serializer = ProfileSerializer(user_profile, context={"request": req})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

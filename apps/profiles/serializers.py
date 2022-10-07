@@ -50,8 +50,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        if instance.top_agent == True:
-            representation.top_agent = True
+        if instance.top_agent:
+            representation["top_agent"] = True
         return representation
 
 
@@ -64,7 +64,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
             "phone_number",
             "profile_photo",
             "about_me",
-            "licence",
+            "lincense",
             "gender",
             "country",
             "city",
@@ -75,6 +75,6 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        if instance.top_agent == True:
-            representation.top_agent = True
+        if instance.top_agent:
+            representation["top_agent"] = True
         return representation

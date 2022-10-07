@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -78,7 +79,7 @@ ROOT_URLCONF = "real_estate.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -152,10 +153,10 @@ SIMPLE_JWT = {
         "Bearer",
         "JWT",
     ),
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=2),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=6),
     "SIGNING_KEY": env("SIGNING_KEY"),
-    "AUTH_HEADER_NAME": "HTTP AUTHORIZATION",
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 DJOSER = {
@@ -174,7 +175,7 @@ DJOSER = {
         "user_create": "apps.users.serializers.CreateUserSerializer",
         "user": "apps.users.serializers.UserSerializer",
         "current_user": "apps.users.serializers.UserSerializer",
-        "user_delete": "djoser.serializer.UserDeleteSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
 # Default primary key field type
