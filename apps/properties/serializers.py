@@ -26,7 +26,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "tax",
             "final_property_price",
             "plot_area",
-            "total_floors",
+            "floors",
             "bedrooms",
             "bathrooms",
             "advert_type",
@@ -40,8 +40,8 @@ class PropertySerializer(serializers.ModelSerializer):
             "views",
         ]
 
-        def get_user(self, obj):
-            return obj.user
+    def get_user(self, obj):
+        return obj.user.username
 
 
 class PropertyCreateSerializer(serializers.ModelSerializer):

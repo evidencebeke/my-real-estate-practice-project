@@ -35,6 +35,7 @@ class Property(TimeStampedUUIDModel):
         OTEHR = "Other", _("Other")
 
     user = models.ForeignKey(
+        User,
         verbose_name=_("Agent, Seller or Buyer"),
         related_name="agent_buyer",
         on_delete=models.DO_NOTHING,
@@ -47,7 +48,7 @@ class Property(TimeStampedUUIDModel):
         unique=True,
         blank=True,
     )
-    desription = models.TextField(verbose_name=_("description"), default="Description")
+    description = models.TextField(verbose_name=_("description"), default="Description")
     country = CountryField(
         verbose_name=_("Country"), default="NG", blank_label="Select Country"
     )
@@ -64,7 +65,7 @@ class Property(TimeStampedUUIDModel):
         default=112,
     )
     price = models.DecimalField(
-        verbose_name=_("Price"), max_digits=8, decimal_placces=2, default=0.0
+        verbose_name=_("Price"), max_digits=8, decimal_places=2, default=0.0
     )
     tax = models.DecimalField(
         verbose_name=_("Property Tax"),
@@ -94,17 +95,18 @@ class Property(TimeStampedUUIDModel):
         default=PropertyType.HOUSE,
     )
     cover_photo = models.ImageField(
-        verbose_name=_("Main photo"), default="/house_sample.jpg", null=True, blak=True
+        verbose_name=_("Main photo"), default="/house_sample.jpg", null=True, blank=True
     )
-    photo_1 = models.ImageField(default="/interior_sample.jpg", null=True, blak=True)
-    photo_2 = models.ImageField(default="/interior_sample.jpg", null=True, blak=True)
-    photo_3 = models.ImageField(default="/interior_sample.jpg", null=True, blak=True)
-    photo_4 = models.ImageField(default="/interior_sample.jpg", null=True, blak=True)
+    photo1 = models.ImageField(default="/interior_sample.jpg", null=True, blank=True)
+    photo2 = models.ImageField(default="/interior_sample.jpg", null=True, blank=True)
+    photo3 = models.ImageField(default="/interior_sample.jpg", null=True, blank=True)
+    photo4 = models.ImageField(default="/interior_sample.jpg", null=True, blank=True)
     published_status = models.BooleanField(
         verbose_name=_("published status"), default=False
     )
     views = models.IntegerField(verbose_name=_("Total views"), default=0)
-    objects = models.Manager(publisehd=PropertyPublishedManager)
+    objects = models.Manager()
+    published = PropertyPublishedManager()
 
     def __str__(self):
         return self.title
@@ -115,8 +117,8 @@ class Property(TimeStampedUUIDModel):
 
     def save(self, *args, **kwargs):
         self.title = str.title(self.title)
-        self.ref_code = str.join(
-            random.choices(string.ascii_uppercase + string.digits, k=20)
+        self.ref_code = "".join(
+            random.choices(string.ascii_uppercase + string.digits, k=10)
         )
         super(Property, self).save(*args, **kwargs)
 
@@ -125,8 +127,8 @@ class Property(TimeStampedUUIDModel):
         tax_percentage = self.tax
         property_price = self.price
         tax_amount = round(tax_percentage * property_price, 2)
-        price_after_price = float(tax_amount + property_price, 2)
-        return price_after_price
+        price_after_tax = float(round(tax_amount + property_price, 2))
+        return price_after_tax
 
 
 class PropertyViews(TimeStampedUUIDModel):
