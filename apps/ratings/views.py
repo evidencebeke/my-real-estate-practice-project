@@ -14,15 +14,19 @@ User = get_user_model()
 @permission_classes([permissions.IsAuthenticated])
 def create_agent_review(request, profile_id):
     agent_profile = Profile.objects.get(id=profile_id, is_agent=True)
+
     data = request.data
     profile_user = User.objects.get(pkid=agent_profile.user.pkid)
+
+    print(profile_user.id)
+    # return Response("I dont like that")
 
     if profile_user.email == request.user.email:
         formatted_response = {"message": "You canot rate yourself"}
         return Response(formatted_response, status=status.HTTP_403_FORBIDDEN)
 
     already_exists = agent_profile.agent_review.filter(
-        agent___pkid=profile_user.pkid
+        agent__pkid=profile_user.pkid
     ).exists()
     if already_exists:
         formatted_response = {"detail": "Profile already reviewed"}

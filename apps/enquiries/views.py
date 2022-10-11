@@ -17,10 +17,10 @@ def send_enquiry_email(request):
         name = data["name"]
         email = data["email"]
         message = data["message"]
-        from_email = data["from_email"]
+        from_email = data["email"]
         recipient_list = [DEFAULT_FROM_EMAIL]
 
-        send_mail(subject, name, from_email, recipient_list, fail_silently=True)
+        send_mail(subject, message, from_email, recipient_list, fail_silently=True)
         enquiry = Enquiry(name=name, email=email, subject=subject, message=message)
         enquiry.save()
 
