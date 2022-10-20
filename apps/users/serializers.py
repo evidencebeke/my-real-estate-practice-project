@@ -33,7 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
             "country",
             "city",
             "top_seller",
-            "f",
         ]
 
     def get_first_name(self, obj):

@@ -56,25 +56,31 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "rest_framework_simplejwt",
     "djoser",
+    "corsheaders",
 ]
 LOCAL_APPS = [
     "apps.users",
     "apps.common",
     "apps.profiles",
     "apps.ratings",
-    'apps.properties',
-    'apps.enquiries',
+    "apps.properties",
+    "apps.enquiries",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",
+    "http://localhost:8000",
+)
 
 ROOT_URLCONF = "real_estate.urls"
 
@@ -161,6 +167,8 @@ SIMPLE_JWT = {
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
+# DOMAIN = "localhost:3000"
+# SITE_NAME = "Frontend"
 DJOSER = {
     "LOGIN_FIELD": "email",
     "USER_CREATE_PASSWORD_RETYPE": True,

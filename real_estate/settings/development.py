@@ -10,7 +10,12 @@ DATABASES = {
         "PORT": env("PG_PORT"),
     }
 }
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",
+    "http://localhost:8000",
+)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_USE_TLS = True
 EMAIL_PORT = env("EMAIL_PORT")

@@ -25,10 +25,21 @@ def create_agent_review(request, profile_id):
         formatted_response = {"message": "You canot rate yourself"}
         return Response(formatted_response, status=status.HTTP_403_FORBIDDEN)
 
-    already_exists = agent_profile.agent_review.filter(
+    # already_exists = agent_profile.agent_review.filter(
+    #     agent__pkid=profile_user.pkid
+    # ).exists()
+    # alreadyExists = agent_profile.agent_review.filter(
+    #     agent__pkid=profile_user.pkid
+    # ).exists()
+    # if alreadyExists:
+    #     formatted_response = {"detail": "Profile already reviewed"}
+    #     return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
+
+    alreadyExists = agent_profile.agent_review.filter(
         agent__pkid=profile_user.pkid
     ).exists()
-    if already_exists:
+
+    if alreadyExists:
         formatted_response = {"detail": "Profile already reviewed"}
         return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
     elif data["rating"] == 0:
